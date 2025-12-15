@@ -1,0 +1,21 @@
+services:
+  app_1:
+    build: .
+    container_name: aegis_node_1
+  app_2:
+    build: .
+    container_name: aegis_node_2
+  app_3:
+    build: .
+    container_name: aegis_node_3
+  nginx:
+    image: nginx:alpine
+    container_name: aegis_loadbalancer
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - app_1
+      - app_2
+      - app_3
