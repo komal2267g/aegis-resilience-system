@@ -130,34 +130,68 @@ When a payload of **100000** is injected
 
 ### 1️⃣ Clone the Repository
 
-1. Clone the Repository
-code
-Bash
 git clone https://github.com/komal2267g/aegis-resilience-system.git
 cd aegis-resilience-system
-2. Launch the Data Center
-This spins up 3 replicas of the Aegis Server and 1 Nginx Load Balancer.
-code
-Bash
+
+2️⃣ Launch the Data Center
+
+This starts:
+
+3 Aegis server replicas
+
+1 Nginx load balancer
+
 docker-compose up --build
-3. Access Control Dashboard
-Open your browser to:
-👉 http://localhost:8080
-4. Run Verification Tests
-Safe Test: Enter 100 -> Result: Deployed ✅
-Crash Test: Enter 100000 -> Result: Blocked 🛑
+
+3️⃣ Access the Dashboard
+
+Open in your browser:
+
+http://localhost:8080
+
+4️⃣ Run Verification Tests
+Test Type	Input	Result
+Safe Test	100	✅ Deployed
+Crash Test	100000	🛑 Blocked
 📂 Project Structure
-code
-Bash
 aegis-guard/
-├── docker-compose.yml   # Orchestrator (Simulates Kubernetes Pods)
-├── Dockerfile           # Container Definition
-├── nginx.conf           # Load Balancer Logic
-├── server.js            # Main Control Plane (Express API)
-├── worker.js            # The Sandbox (Isolation Logic)
-├── public/              # Frontend Dashboard
+├── docker-compose.yml   # Orchestrates multiple replicas
+├── Dockerfile           # Container definition
+├── nginx.conf           # Load balancer logic
+├── server.js            # Main control plane (Express API)
+├── worker.js            # Sandbox / runtime isolation
+├── public/              # Frontend dashboard
 └── README.md            # Documentation
+
+🎯 Why This Project Matters
+
+Solves real production outage scenarios
+
+Goes beyond textbook CI/CD pipelines
+
+Demonstrates understanding of:
+
+Runtime failures
+
+Fault isolation
+
+Resilience engineering
+
+Distributed systems behavior
+
+📌 Highly relevant for roles like:
+
+DevOps Engineer
+
+Site Reliability Engineer (SRE)
+
+Platform Engineer
+
+Distributed Systems Engineer
+
 👤 Author
+
 Komal Chaurasiya
 Infrastructure & DevOps Enthusiast
-"A system that survives failure is more valuable than one that never fails."
+
+“A system that survives failure is more valuable than one that never fails.”
