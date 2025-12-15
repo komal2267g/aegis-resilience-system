@@ -22,6 +22,7 @@ The result was a **Single Point of Failure** that crashed the entire control pla
 
 ---
 
+
 ## 🛡️ The Solution: "Aegis Architecture"
 
 **Aegis** changes the rule of deployment. It introduces a **Runtime Immunization Layer**. 
@@ -92,6 +93,3 @@ aegis-guard/
 Komal Chaurasiya
 Infrastructure & DevOps Enthusiast
 "A system that survives failure is more valuable than one that never fails."
-![alt text](https://img.shields.io/badge/GitHub-Profile-black?style=for-the-badge&logo=github)
-
-![alt text](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)
