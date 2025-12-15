@@ -29,67 +29,81 @@ The result was a **Single Point of Failure** that crashed the entire control pla
 
 Instead of trusting configuration updates, the system acts as a biological immune system. It spawns a **Sacrificial Sandbox (Worker Thread)** to test the "virus" (new config) before letting it touch the main body (Production Server).
 
-### 🏗️ How It Works (Internal Logic)
+🏗️ How It Works (Internal Logic)
+graph TD
+    Admin["Admin / CI Pipeline"] -->|Push Config| MainServer["Main Server Process"]
 
-```mermaid
-graph TD;
-    Admin-->|Push Config| MainServer[Main Server Process];
-    MainServer-->|1. ISOLATE| Worker[👷 Worker Sandbox];
-    Worker-->|2. STRESS TEST| RAM{Memory Check};
-    
-    RAM-- Crash/Panic --> Reject[❌ REJECT Update];
-    RAM-- Safe --> Apply[✅ APPLY Config];
-    
-    Reject-->|Signal| MainServer;
-    Apply-->|Signal| MainServer;
-    
+    MainServer -->|1. Isolate Config| Worker["Worker Sandbox"]
+    Worker -->|2. Stress Test| RAM{"Memory Check"}
+
+    RAM -->|Crash / Panic| Reject["REJECT Update"]
+    RAM -->|Safe| Apply["APPLY Config"]
+
+    Reject -->|Failure Signal| MainServer
+    Apply -->|Success Signal| MainServer
+
     style Reject fill:#ffcccc,stroke:#ff0000
     style Apply fill:#ccffcc,stroke:#00ff00
-Key Takeaway: If the Worker crashes (Memory Limit Exceeded), the Main Server remains 100% online. The outage is contained.
+
+
+Key Takeaway:
+If the Worker crashes due to memory overflow, the Main Server remains 100% online.
+The outage is fully contained.
+
 🚀 Key Engineering Features
 Feature	Standard System	Aegis System
 Validation Method	Static Syntax Check	Runtime Canary Analysis
-Failure Impact	Total Server Crash	Zero Downtime (Only Sandbox dies)
+Failure Impact	Total Server Crash	Zero Downtime
 Architecture	Monolithic State	Isolated Microservices
-Blast Radius	Global	Contained to Single Process
+Blast Radius	Global	Single Sandbox Process
 📸 Proof of Resilience
 ✅ 1. Safe Deployment
-When a normal configuration is pushed, the sandbox validates it, and the Main Server applies the update instantly.
-![alt text](./screenshots/safe-deployment.png)
+
+When a normal configuration is pushed, the sandbox validates it and the Main Server applies the update instantly.
+
+![Safe Deployment](./screenshots/safe-deployment.png)
+
 🛑 2. Attack Simulation (Crash Blocked)
-When we inject a payload of 100,000 (Simulating the Cloudflare memory bug), the Worker Thread Crashes, but the System Blocks the Update.
-![alt text](./screenshots/crash-prevention.png)
-The terminal logs confirm the Main Server did not restart even though a fatal memory error occurred.
+
+When a payload of 100000 is injected (simulating the Cloudflare memory bug), the Worker crashes — but the system blocks the update.
+
+![Crash Prevention](./screenshots/crash-prevention.png)
+
+
+📌 Important:
+The terminal logs confirm that the Main Server never restarts, even though a fatal memory error occurs inside the sandbox.
+
 🛠️ Installation & Usage (Local Cloud)
-You need Docker installed to run the full simulation (3 Nodes + 1 Load Balancer).
-1. Clone the Repository
-code
-Bash
+1️⃣ Clone the Repository
 git clone https://github.com/komal2267g/aegis-resilience-system.git
 cd aegis-resilience-system
-2. Launch the Data Center
-This spins up 3 replicas of the Aegis Server and 1 Nginx Load Balancer.
-code
-Bash
+
+2️⃣ Launch the Data Center
 docker-compose up --build
-3. Access Control Dashboard
-Open your browser to:
+
+3️⃣ Access Control Dashboard
+
 👉 http://localhost:8080
-4. Run Verification Tests
-Safe Test: Enter 100 -> Result: Deployed ✅
-Crash Test: Enter 100000 -> Result: Blocked 🛑
+
+4️⃣ Run Verification Tests
+
+Safe Test: 100 → ✅ Deployed
+
+Crash Test: 100000 → 🛑 Blocked
+
 📂 Project Structure
-code
-Bash
 aegis-guard/
 ├── docker-compose.yml   # Orchestrator (Simulates Kubernetes Pods)
 ├── Dockerfile           # Container Definition
 ├── nginx.conf           # Load Balancer Logic
 ├── server.js            # Main Control Plane (Express API)
-├── worker.js            # The Sandbox (Isolation Logic)
+├── worker.js            # Sandbox / Canary Isolation
 ├── public/              # Frontend Dashboard
 └── README.md            # Documentation
+
 👤 Author
+
 Komal Chaurasiya
 Infrastructure & DevOps Enthusiast
+
 "A system that survives failure is more valuable than one that never fails."
