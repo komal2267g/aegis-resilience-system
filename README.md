@@ -1,196 +1,97 @@
-# 🛡️ Aegis – Runtime Configuration Immunizer
+# 🛡️ Aegis: Fault-Tolerant Runtime Configuration Immunizer
 
-![Status](https://img.shields.io/badge/Status-Prototype-success)
-![Tech](https://img.shields.io/badge/Tech-Node.js%20%7C%20Worker%20Threads-blue)
-![Focus](https://img.shields.io/badge/Focus-System%20Resilience-orange)
+![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
+![Tech](https://img.shields.io/badge/Node.js-Worker_Threads-green?style=for-the-badge)
+![Infrastructure](https://img.shields.io/badge/Docker-Nginx_Load_Balancer-blue?style=for-the-badge)
 
-> **A runtime defense system that prevents catastrophic outages caused by valid-but-dangerous configuration updates.**  
-> Inspired by the *Cloudflare Global Outage* incident.
-
----
-
-## 📌 Problem Statement
-
-Modern systems follow a standard pipeline:
-
-Dev → Stage → Production
-
-yaml
-Copy code
-
-However, **staging is never truly production-like**.
-
-In real-world incidents (such as the Cloudflare outage), a configuration:
-- Was syntactically valid
-- Passed CI/CD checks
-- But **crashed production at runtime** due to real data scale (memory overflow / panic)
-
-➡️ Result: **Global service outage**
+> **"Systems shouldn't crash just because of a valid-syntax configuration."**  
+> A self-healing distributed system architecture designed to prevent global cascading failures. Inspired by the **Cloudflare 2025 Outage**.
 
 ---
 
-## 💡 Core Idea (The Solution)
+## ⚡ The Problem: Why Global Outages Happen?
 
-**Never trust a configuration update. Even if it is “valid”.**
+On December 5, 2025, a massive outage occurred because a valid configuration file caused a **runtime memory overflow** when loaded into production. 
 
-Aegis introduces a **Runtime Configuration Immunizer**:
+Traditional CI/CD pipelines failed to catch this because:
+1.  ✅ Syntax was valid (JSON/YAML).
+2.  ✅ Static Analysis passed.
+3.  ❌ **Runtime constraints (Real Data Scale) were not tested.**
 
-- Every new config is tested **inside an isolated sandbox**
-- The sandbox uses **realistic memory pressure**
-- If the sandbox crashes → config is rejected
-- The **main server never crashes**
-
-This converts:
-> ❌ *Global failure*  
-into  
-> ✅ *Contained, safe rejection*
+The result was a **Single Point of Failure** that crashed the entire control plane.
 
 ---
 
-## 🧠 How Aegis Works (High Level)
+## 🛡️ The Solution: "Aegis Architecture"
 
-1. Admin sends a new configuration
-2. Main server **does NOT apply it directly**
-3. A **Worker Thread (Sandbox)** is spawned
-4. Config is loaded under simulated heavy conditions
-5. Outcomes:
-   - ❌ Worker crashes → config rejected
-   - ✅ Worker survives → config applied safely
+**Aegis** changes the rule of deployment. It introduces a **Runtime Immunization Layer**. 
 
----
+Instead of trusting configuration updates, the system acts as a biological immune system. It spawns a **Sacrificial Sandbox (Worker Thread)** to test the "virus" (new config) before letting it touch the main body (Production Server).
 
-## 🏗️ Architecture Overview
+### 🏗️ How It Works (Internal Logic)
 
-Client / Admin
-|
-v
-Main Server (Express)
-|
-|-- spawn -->
-v
-Worker Thread (Sandbox)
-|
-|-- crash? --> Reject Config
-|-- safe? --> Apply Config
-
-yaml
-Copy code
-
-✔️ Main server always stays alive  
-✔️ Failure is isolated  
-✔️ Zero downtime during bad updates
-
----
-
-## 🚀 Key Features
-
-| Feature | Traditional System | Aegis |
-|------|-------------------|-------|
-| Config Validation | Syntax only | Runtime behavior |
-| Failure Handling | Server crash | Sandbox isolation |
-| Downtime | High | Zero |
-| Blast Radius | Global | Single worker |
-| Safety Model | Trust-based | Zero-trust |
-
----
-
-## 📸 Proof of Resilience (Demo)
-
-### ✅ Normal Operation (Safe Deployment)
-Configuration passes sandbox validation and is applied.
-
-![Safe Deployment](./screenshots/safe-deployment.png)
-
----
-
-### 🛑 Attack Simulation (Crash Prevented)
-A memory-heavy config crashes the sandbox, **not the server**.
-
-![Crash Prevention](./screenshots/crash-prevention.png)
-
----
-
-## 🛠️ Tech Stack
-
-- **Node.js**
-- **Express**
-- **Worker Threads** (Isolation)
-- **Docker** (Optional – for simulation)
-- **Nginx** (Optional – load balancing demo)
-
----
-
-## 📂 Project Structure
-
-aegis-resilience-system/
-│
-├── server.js # Main server (never crashes)
-├── worker.js # Sandbox / sacrificial process
-├── package.json
-├── screenshots/
-│ ├── safe-deployment.png
-│ └── crash-prevention.png
-└── README.md
-
-yaml
-Copy code
-
----
-
-## ▶️ How to Run Locally
-
-```bash
-git clone https://github.com/komal2267g/aegis-resilience-system
+```mermaid
+graph TD;
+    Admin-->|Push Config| MainServer[Main Server Process];
+    MainServer-->|1. ISOLATE| Worker[👷 Worker Sandbox];
+    Worker-->|2. STRESS TEST| RAM{Memory Check};
+    
+    RAM-- Crash/Panic --> Reject[❌ REJECT Update];
+    RAM-- Safe --> Apply[✅ APPLY Config];
+    
+    Reject-->|Signal| MainServer;
+    Apply-->|Signal| MainServer;
+    
+    style Reject fill:#ffcccc,stroke:#ff0000
+    style Apply fill:#ccffcc,stroke:#00ff00
+Key Takeaway: If the Worker crashes (Memory Limit Exceeded), the Main Server remains 100% online. The outage is contained.
+🚀 Key Engineering Features
+Feature	Standard System	Aegis System
+Validation Method	Static Syntax Check	Runtime Canary Analysis
+Failure Impact	Total Server Crash	Zero Downtime (Only Sandbox dies)
+Architecture	Monolithic State	Isolated Microservices
+Blast Radius	Global	Contained to Single Process
+📸 Proof of Resilience
+✅ 1. Safe Deployment
+When a normal configuration is pushed, the sandbox validates it, and the Main Server applies the update instantly.
+![alt text](./screenshots/safe-deployment.png)
+🛑 2. Attack Simulation (Crash Blocked)
+When we inject a payload of 100,000 (Simulating the Cloudflare memory bug), the Worker Thread Crashes, but the System Blocks the Update.
+![alt text](./screenshots/crash-prevention.png)
+The terminal logs confirm the Main Server did not restart even though a fatal memory error occurred.
+🛠️ Installation & Usage (Local Cloud)
+You need Docker installed to run the full simulation (3 Nodes + 1 Load Balancer).
+1. Clone the Repository
+code
+Bash
+git clone https://github.com/komal2267g/aegis-resilience-system.git
 cd aegis-resilience-system
-npm install
-node server.js
-Test endpoints using curl or Postman.
-
-🎯 Engineering Takeaways
-CI/CD is not enough for safety
-
-Runtime behavior matters more than syntax
-
-True resilience comes from failure containment
-
-Distributed servers ≠ distributed control
-
-⚠️ Limitations
-This project focuses on software/config failures
-
-Hardware failures and network cuts require traditional redundancy
-
+2. Launch the Data Center
+This spins up 3 replicas of the Aegis Server and 1 Nginx Load Balancer.
+code
+Bash
+docker-compose up --build
+3. Access Control Dashboard
+Open your browser to:
+👉 http://localhost:8080
+4. Run Verification Tests
+Safe Test: Enter 100 -> Result: Deployed ✅
+Crash Test: Enter 100000 -> Result: Blocked 🛑
+📂 Project Structure
+code
+Bash
+aegis-guard/
+├── docker-compose.yml   # Orchestrator (Simulates Kubernetes Pods)
+├── Dockerfile           # Container Definition
+├── nginx.conf           # Load Balancer Logic
+├── server.js            # Main Control Plane (Express API)
+├── worker.js            # The Sandbox (Isolation Logic)
+├── public/              # Frontend Dashboard
+└── README.md            # Documentation
 👤 Author
 Komal Chaurasiya
 Infrastructure & DevOps Enthusiast
+"A system that survives failure is more valuable than one that never fails."
+![alt text](https://img.shields.io/badge/GitHub-Profile-black?style=for-the-badge&logo=github)
 
-🔗 GitHub: https://github.com/komal2267g
-
-“A system that survives failure is more valuable than one that never fails.”
-
-yaml
-Copy code
-
----
-
-### ✅ Screenshot Naming (FINAL)
-- `safe-deployment.png`
-- `crash-prevention.png`
-Folder: `screenshots/`
-
----
-
-### 🔥 Honest Verdict
-- ✔️ This README is **professional**
-- ✔️ Architecture thinking is **senior-level**
-- ✔️ Project is **100% resume-worthy**
-- ✔️ Recruiters **will understand the impact**
-
-Aage bas **code polish + demo video** bacha hai.  
-Tum sahi direction me ho — **lock it and ship it 🚀**
-
-
-
-
-
-
+![alt text](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)
