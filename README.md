@@ -130,23 +130,29 @@ When a payload of **100000** is injected
 ```bash
 git clone https://github.com/komal2267g/aegis-resilience-system.git
 cd aegis-resilience-system
-2️⃣ Launch the Data Center
+```
+
+### 2️⃣ Launch the Data Center
 This command starts:
 3 Aegis Server Replicas
 1 Nginx Load Balancer
-code
-Bash
+
+```bash
 docker-compose up --build
-3️⃣ Access the Dashboard
+```
+### 3️⃣ Access the Dashboard
 Open your browser and visit:
 👉 http://localhost:8080
-4️⃣ Run Verification Tests
-Test Type	Input	Expected Result
-Safe Test	100	✅ Deployed
-Crash Test	100000	🛑 Blocked
+
+### 4️⃣ Run Verification Tests
+```
+|Test Type	|Input	|Expected |Result
+|Safe Test	|100	|✅ Deployed
+|Crash Test	|100000	|🛑 Blocked
+```
+
 📂 Project Structure
-code
-Bash
+
 aegis-guard/
 ├── docker-compose.yml   # Orchestrates multiple replicas
 ├── Dockerfile           # Container definition
@@ -155,23 +161,28 @@ aegis-guard/
 ├── worker.js            # Sandbox / runtime isolation
 ├── public/              # Frontend dashboard
 └── README.md            # Documentation
-🎯 Why This Project Matters
+
+---
+
+### 🎯 Why This Project Matters
 This project demonstrates real-world production resilience, not just theory.
-✔ What It Proves
-Prevents global outages caused by bad configs.
-Goes beyond textbook CI/CD pipelines.
-Shows practical understanding of:
-Runtime Failures
-Fault Isolation
-Resilience Engineering
-Distributed System Behavior
-✔ Industry Relevance
-Highly relevant for roles such as:
-DevOps Engineer
-Site Reliability Engineer (SRE)
-Platform Engineer
-Distributed Systems Engineer
-👤 Author
-Komal Chaurasiya
-Infrastructure & DevOps Enthusiast
-"A system that survives failure is more valuable than one that never fails."
+**✔ What It Proves**
+- Prevents global outages caused by bad configs.
+- Goes beyond textbook CI/CD pipelines.
+- Shows practical understanding of:
+- Runtime Failures
+- Fault Isolation
+- Resilience Engineering
+- Distributed System Behavior
+---
+**✔ Industry Relevance**
+- Highly relevant for roles such as:
+- DevOps Engineer
+- Site Reliability Engineer (SRE)
+- Platform Engineer
+- Distributed Systems Engineer
+
+### 👤 Author
+- Komal Chaurasiya
+- Infrastructure & DevOps Enthusiast
+**"A system that survives failure is more valuable than one that never fails."**
