@@ -129,7 +129,7 @@ When a payload of **100000** is injected
 ---
 
 ### 1️⃣ Clone the Repository
-
+```bash
 git clone https://github.com/komal2267g/aegis-resilience-system.git
 cd aegis-resilience-system
 
@@ -179,7 +179,7 @@ Resilience engineering
 
 Distributed systems behavior
 
-📌 Highly relevant for roles like:
+📌 Highly Relevant For Roles:
 
 DevOps Engineer
 
@@ -194,4 +194,4 @@ Distributed Systems Engineer
 Komal Chaurasiya
 Infrastructure & DevOps Enthusiast
 
-“A system that survives failure is more valuable than one that never fails.”
+“A system that survives failure is more valuable than one that never fails.”e is more valuable than one that never fails.”
