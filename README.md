@@ -154,15 +154,18 @@ Open your browser and visit:
 
 ### 📂 Project Structure
 
-aegis-guard/
-├── docker-compose.yml   # Orchestrates multiple replicas
-├── Dockerfile           # Container definition
-├── nginx.conf           # Load balancer logic
-├── server.js            # Main control plane (Express API)
-├── worker.js            # Sandbox / runtime isolation
-├── public/              # Frontend dashboard
-└── README.md            # Documentation
-
+aegis-resilience-system/
+├── public/
+│   └── index.html        # Real-time Dashboard Frontend
+├── screenshots/
+│   ├── safe-deploy.png   # Evidence: Safe Deployment
+│   └── crash-prev.png    # Evidence: Crash Prevention
+├── docker-compose.yml    # Orchestration (3 Server Replicas)
+├── Dockerfile            # Container Definition
+├── nginx.conf            # Nginx Load Balancer Logic
+├── server.js             # Main Control Plane (The Survivor)
+├── worker.js             # Sandbox / Runtime Isolation (The Victim)
+└── README.md             # Project Documentation
 ---
 
 ### 🎯 Why This Project Matters
