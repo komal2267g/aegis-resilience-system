@@ -191,4 +191,5 @@ This project demonstrates real-world production resilience, not just theory.
 ### 👤 Author
 - Komal Chaurasiya
 - Infrastructure & DevOps Enthusiast
+---
 **"A system that survives failure is more valuable than one that never fails."**
