@@ -145,13 +145,14 @@ Open your browser and visit:
 👉 http://localhost:8080
 
 ### 4️⃣ Run Verification Tests
-```
-|Test Type	|Input	|Expected |Result
-|Safe Test	|100	|✅ Deployed
-|Crash Test	|100000	|🛑 Blocked
-```
 
-📂 Project Structure
+| Test Type | Input Data | Expected Result |
+| :--- | :--- | :--- |
+| **Safe Test** | `100` | ✅ **Deployed** |
+| **Crash Test** | `100000` | 🛑 **Blocked** |
+---
+
+### 📂 Project Structure
 
 aegis-guard/
 ├── docker-compose.yml   # Orchestrates multiple replicas
