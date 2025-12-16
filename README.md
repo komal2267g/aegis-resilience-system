@@ -128,31 +128,35 @@ When a payload of **100000** is injected
 
 ---
 
-### 1️⃣ Clone the Repository
-```bash
+###1️⃣ Clone the Repository
 git clone https://github.com/komal2267g/aegis-resilience-system.git
 cd aegis-resilience-system
+---
 
-2️⃣ Launch the Data Center
+###2️⃣ Launch the Data Center
 
-This starts:
+This command starts:
 
 3 Aegis server replicas
 
 1 Nginx load balancer
 
 docker-compose up --build
+---
 
-3️⃣ Access the Dashboard
+###3️⃣ Access the Dashboard
 
-Open in your browser:
+Open your browser and visit:
 
 http://localhost:8080
+---
 
-4️⃣ Run Verification Tests
-Test Type	Input	Result
+###4️⃣ Run Verification Tests
+Test Type	Input	Expected Result
 Safe Test	100	✅ Deployed
 Crash Test	100000	🛑 Blocked
+---
+
 📂 Project Structure
 aegis-guard/
 ├── docker-compose.yml   # Orchestrates multiple replicas
@@ -165,11 +169,15 @@ aegis-guard/
 
 🎯 Why This Project Matters
 
-Solves real production outage scenarios
+This project demonstrates real-world production resilience, not just theory.
+
+✔ What It Proves
+
+Prevents global outages caused by bad configs
 
 Goes beyond textbook CI/CD pipelines
 
-Demonstrates understanding of:
+Shows practical understanding of:
 
 Runtime failures
 
@@ -177,9 +185,11 @@ Fault isolation
 
 Resilience engineering
 
-Distributed systems behavior
+Distributed system behavior
 
-📌 Highly Relevant For Roles:
+✔ Industry Relevance
+
+Highly relevant for roles such as:
 
 DevOps Engineer
 
@@ -194,4 +204,4 @@ Distributed Systems Engineer
 Komal Chaurasiya
 Infrastructure & DevOps Enthusiast
 
-“A system that survives failure is more valuable than one that never fails.”e is more valuable than one that never fails.”
+“A system that survives failure is more valuable than one that never fails.”
