@@ -154,6 +154,7 @@ Open your browser and visit:
 
 ### 📂 Project Structure
 
+```text
 aegis-resilience-system/
 ├── public/
 │   └── index.html        # Real-time Dashboard Frontend
@@ -166,6 +167,7 @@ aegis-resilience-system/
 ├── server.js             # Main Control Plane (The Survivor)
 ├── worker.js             # Sandbox / Runtime Isolation (The Victim)
 └── README.md             # Project Documentation
+```
 ---
 
 ### 🎯 Why This Project Matters
