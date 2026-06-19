@@ -34,6 +34,6 @@ app.post('/deploy-config', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("🛡️  Aegis Dashboard running at http://localhost:3000");
 });
