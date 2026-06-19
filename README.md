@@ -1,5 +1,6 @@
 # 🛡️ Aegis: Fault-Tolerant Runtime Configuration Immunizer
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_App-orange?style=for-the-badge&logo=render)](https://aegis-resilience-system.onrender.com)
 ![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
 ![Tech](https://img.shields.io/badge/Node.js-Worker_Threads-green?style=for-the-badge)
 ![Infrastructure](https://img.shields.io/badge/Docker-Nginx_Load_Balancer-blue?style=for-the-badge)
